@@ -3,26 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>fnv:</string>
+	<string>funcItem</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
-		<string>ClassImplementation</string>
+		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>- (void)&lt;#method name#&gt;:(&lt;#argv type#&gt;)&lt;#argv#&gt; {
-    &lt;#code#&gt;
-}</string>
+	<string>NSString *const HuFuncItem_</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>36A99A40-AF77-4CCA-8FF3-E1587F48F239</string>
+	<string>130DE104-19CD-4D22-8FF9-58B8E49D1F96</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Objective-C</string>
 	<key>IDECodeSnippetSummary</key>
-	<string></string>
+	<string>funcItem</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>创建一个返回值为空并且带参数的方法</string>
+	<string>funcItem</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>
-	<integer>2</integer>
+	<integer>0</integer>
 </dict>
 </plist>

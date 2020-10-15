@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>tv_m</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>@implementation &lt;#type#&gt;Model
+
++ (NSDictionary *)mj_replacedKeyFromPropertyName{
+    return @{@"ID" : @"id"};
+}
+
+@end
+
+
+@interface &lt;#type#&gt;TableViewCell()
+
+@property (nonatomic, strong) UIView *lineV;
+@property (nonatomic, strong) UILabel *titleL;
+@property (nonatomic, strong) &lt;#type#&gt;Model *model;
+
+@end
+
+@implementation &lt;#type#&gt;TableViewCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
+        [self buildSubview];
+    }
+    return self;
+}
+
+
+- (void)buildSubview{
+    
+    [self.contentView addSubview:self.titleL];
+    
+    [_titleL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(15);
+        make.right.mas_equalTo(-15);
+        make.top.mas_equalTo(15);
+        make.bottom.mas_equalTo(-15);
+    }];
+    
+    
+    [self.contentView addSubview:self.lineV];
+    [_lineV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(line_height);
+    }];
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+}
+
+- (void)layoutAllView{
+    &lt;#type#&gt;Model *model = self.model;
+//    self.titleL.text = model.programmeName;
+    
+}
+
+- (void)config:(&lt;#type#&gt;Model *)model{
+    self.model = model;
+    [self layoutAllView];
+}
+
+#pragma mark - lazy mothod
+- (UIView *)lineV{
+    if (!_lineV) {
+        _lineV = [HuBaseCreatView creatViewWithBackgroundColor:page_bgcolor];
+    }
+    return _lineV;
+}
+
+- (UILabel *)titleL {
+    if (!_titleL) {
+        UILabel *tmpL = [HuBaseCreatView creatLabelWithFont:kHuFont(16) textColor:huColor(#333333)];
+        tmpL.numberOfLines = 0;
+        _titleL = tmpL;
+    }
+    return _titleL;
+}
+
++ (NSString *)identifier
+{
+    return NSStringFromClass([self class]);
+}
+
+@end
+
+
+
+@interface &lt;#type#&gt;ListViewController ()&lt;UITableViewDelegate, UITableViewDataSource&gt;
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, assign) NSInteger pageNum; // 分页
+
+@end
+
+@implementation &lt;#type#&gt;ViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    kHiddenTabBar
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    kShowInTabBar
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self initDataAndView];
+}
+- (void)initDataAndView {
+    [self initData];
+    [self initView];
+}
+- (void)initData {
+    self.dataArray = @[].mutableCopy;
+}
+- (void)initView {
+    self.view.backgroundColor = page_bgcolor;
+    self.edgesForExtendedLayout = UIRectEdgeNone; //导航栏设置为有透明度,设置view不被导航栏覆盖
+    self.navigationItem.title = @"";
+    [self initTableView];
+}
+- (void)initTableView {
+    if (_tableView == nil) {
+          WS(weakSelf);
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, HHBWIDTH, HHBHEIGHT - Height_NavBar - Height_menuBar) style:UITableViewStylePlain];
+
+        tableView.delegate = self;
+        tableView.dataSource = self;
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        tableView.backgroundColor = page_bgcolor;
+        [tableView registerClass:[&lt;#type#&gt;TableViewCell class] forCellReuseIdentifier:[&lt;#type#&gt;TableViewCell identifier]];
+        [HuCommonMethod automaticTableviewBar:tableView vc:self];
+        [HuCommonMethod setExtraCellLineHidden:tableView];
+        //分页设置
+      
+        tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            weakSelf.pageNum = firstPageNum;
+            [weakSelf onPullRefresh];
+        }];
+        tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            weakSelf.pageNum++;
+            [weakSelf onPullRefresh];
+        }];
+        tableView.estimatedRowHeight = 50;
+        tableView.rowHeight = UITableViewAutomaticDimension;
+        
+        _tableView = tableView;
+        [self.view addSubview:_tableView];
+        [tableView.mj_header beginRefreshing];
+    }
+}
+- (void)onPullRefresh {
+    NSDictionary *param = @{
+        @"page" : @(_pageNum),
+        @"rows" : @(onePageSize),
+        @"keyId" : @"",
+        @"keyword" : @""
+    };
+    NSString *funItem = HuFuncItem_showList;
+    WS(weakSelf);
+    [Request requestPOST:param
+                   view:self.view
+                 urlPre:zWYHYYURL
+                funItem:funItem
+                success:^(NSDictionary *dic) {
+        //首次加载
+        if (weakSelf.pageNum == 1) {
+            [weakSelf.dataArray removeAllObjects];
+        }
+        UITableView *tableView = weakSelf.tableView;
+        NSArray *newArray = [&lt;#type#&gt;Model mj_objectArrayWithKeyValuesArray:dic[@"data"][@"result"]];
+        NSInteger count = newArray.count;
+        [tableView.mj_footer endRefreshing];
+        [tableView.mj_header endRefreshing];
+        if (count &lt; onePageSize) {
+            [tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        for (&lt;#type#&gt;Model *model in newArray) {
+            [weakSelf.dataArray addObject:model];
+        }
+        //添加默认图片
+        [weakSelf setDefatultImage:@"NoMessage" andHint:@"暂时没有内容~"];
+        [weakSelf dealDefaultView:weakSelf.dataArray.count];
+        CGRect frame = tableView.frame;
+        CGFloat flapHeight = 0;
+        frame.origin.y += flapHeight;
+        frame.size.height -= flapHeight;
+        [weakSelf setDefaultViewFrame:frame];
+        [tableView reloadData];
+    }
+                  error:^(NSDictionary *dic) {
+        [weakSelf.tableView.mj_header endRefreshing];
+        TRACELOG(@"%@", dic[@"errMsg"] ? dic[@"errMsg"] : @"网络异常");
+    }
+                failure:^{
+        [weakSelf.tableView.mj_header endRefreshing];
+        TRACELOG(@"failure");
+    }];
+}
+
+#pragma mark - tableView delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _dataArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.01;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = nil;
+    NSInteger row = indexPath.row;
+    if (tableView == _tableView) {
+        if (row &lt; _dataArray.count) {
+            &lt;#type#&gt;TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[&lt;#type#&gt;TableViewCell identifier] forIndexPath:indexPath];
+            &lt;#type#&gt;Model *model = _dataArray[row];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell config:model];
+            return  cell;
+        }
+    }
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    if (tableView == _tableView) {
+        if (row &lt; _dataArray.count) {
+            &lt;#type#&gt;Model *model = _dataArray[row];
+            [self enterPage:model];
+            
+        }
+    }
+}
+
+- (void)enterPage:(&lt;#type#&gt;Model *)model {
+    
+
+}
+</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>B357C810-D402-4E3D-9296-E11D7A86FE59</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>commom tableview list.m</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>commom tableview list.m</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

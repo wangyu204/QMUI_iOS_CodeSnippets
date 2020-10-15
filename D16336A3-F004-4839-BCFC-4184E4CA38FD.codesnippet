@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>tv_h</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>@interface &lt;#type#&gt;Model : NSObject&lt;MJKeyValue&gt;
+
+@property (nonatomic, copy) NSString *ID;
+
+@end
+
+@interface &lt;#type#&gt;TableViewCell : UITableViewCell
+
+- (void)config:(&lt;#type#&gt;Model *)model;
++ (NSString *)identifier;
+
+@end
+
+
+@interface &lt;#type#&gt;ListViewController : HuBaseViewController
+
+@end</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>D16336A3-F004-4839-BCFC-4184E4CA38FD</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C-Plus-Plus</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>commom tableView list.h</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>commom tableView list.h</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>
