@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>lazy_l</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>- (UILabel *)titleL {
+    if (!_titleL) {
+        UILabel *tmpL = [HuBaseCreatView creatLabelWithFont:kHuFont(16) textColor:huColor(#333333)];
+        tmpL.numberOfLines = 0;
+        _titleL = tmpL;
+    }
+    return _titleL;
+}
+</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>EA8305C0-34E4-4DB1-83A4-8171773D449F</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>lazy UILabel</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>lazy UILabel</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>
