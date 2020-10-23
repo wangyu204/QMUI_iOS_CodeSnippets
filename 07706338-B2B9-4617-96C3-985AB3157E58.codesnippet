@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>request_get</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>    WS(weakSelf);
+    NSDictionary *param = @{};
+    NSString *funItem = @"nurse-staff-web/app/home/nurseUnit/read/queryUnitTreeNode/privilege";
+    [Request requestGET:param view:self.view urlPre:nurseTraningURL funItem:funItem success:^(NSDictionary *dic) {
+//        HuSchduleModel *model = [HuSchduleModel mj_objectWithKeyValues:dic[@"object"]];
+        
+    } error:^(NSDictionary *dic) {
+        TRACELOG(@"%@",dic[@"errMsg"] ? dic[@"errMsg"] : @"网络异常");
+    } failure:^{
+        TRACELOG(@"failure");
+        
+    }];</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>07706338-B2B9-4617-96C3-985AB3157E58</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Objective-C</string>
+	<key>IDECodeSnippetSummary</key>
+	<string>request get</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>request get</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>
