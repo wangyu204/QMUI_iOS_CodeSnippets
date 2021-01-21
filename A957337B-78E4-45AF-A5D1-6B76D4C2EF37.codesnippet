@@ -3,32 +3,39 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>request_get</string>
+	<string>req_get_b</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>    WS(weakSelf);
-    NSDictionary *param = @{};
-    NSString *funItem = @"nurse-staff-web/app/home/nurseUnit/read/queryUnitTreeNode/privilege";
+	<string>- (void)reqDuty:(void(^)(BOOL success))finished{
+    NSDictionary *param = @{@"dossierStatus":@"1"};
+    NSString *funItem;
+    //职务职称
+    funItem = @"nurse-staff-web/rank/read/list";
+    WS(weakSelf);
     [Request requestGET:param view:self.view urlPre:nurseTraningURL funItem:funItem success:^(NSDictionary *dic) {
-//        HuSchduleModel *model = [HuSchduleModel mj_objectWithKeyValues:dic[@"object"]];
-        
+        weakSelf.dutyBModel = [HuDutyBaseModel mj_objectWithKeyValues:dic[@"object"]];
+
+        finished(YES);
     } error:^(NSDictionary *dic) {
         TRACELOG(@"%@",dic[@"errMsg"] ? dic[@"errMsg"] : @"网络异常");
+        finished(NO);
     } failure:^{
         TRACELOG(@"failure");
+        finished(NO);
         
-    }];</string>
+    }];
+}</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>07706338-B2B9-4617-96C3-985AB3157E58</string>
+	<string>A957337B-78E4-45AF-A5D1-6B76D4C2EF37</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Objective-C</string>
 	<key>IDECodeSnippetSummary</key>
-	<string>request get</string>
+	<string>req_get_bllock</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>request get</string>
+	<string>req_get_bllock</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>
